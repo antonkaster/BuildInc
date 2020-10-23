@@ -13,7 +13,6 @@ namespace BuildInc
 
         static int Main(string[] args)
         {
-            //args = new string[] { "debug", @"D:\Dropbox\Programming\VCShPr\RefSyncIRB\RefSyncLib\" };
 
             if (args.Length == 0)
             {
