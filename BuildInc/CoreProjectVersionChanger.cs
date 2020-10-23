@@ -71,47 +71,39 @@ namespace BuildInc
 
         private void Increment(bool isRelease)
         {
-            try
+            if (assemblyVersion != null)
             {
-                if (assemblyVersion != null)
-                {
-                    Console.Write($"[ProjectFile] AssemblyVersion: {assemblyVersion.Value} -> ");
-                    string[] split = assemblyVersion.Value.Split('.');
-                    if (int.TryParse(split[split.Length - 1], out int build))
-                    {
-                        split[split.Length - 1] = (++build).ToString();
-                    }
-                    if (isRelease && int.TryParse(split[split.Length - 2], out int release))
-                    {
-                        split[split.Length - 2] = (++release).ToString();
-                    }
-                    assemblyVersion.Value = string.Join(".", split);
-                    Console.WriteLine($"{assemblyVersion.Value}");
-                }
-            }
-            catch
-            { }
+                Console.Write($"[ProjectFile] AssemblyVersion: {assemblyVersion.Value} -> ");
 
-            try
-            {
-                if (fileVersion != null)
-                {
-                    Console.Write($"[ProjectFile] FileVersion: {fileVersion.Value} -> ");
-                    string[] split = fileVersion.Value.Split('.');
-                    if (int.TryParse(split[split.Length - 1], out int build))
-                    {
-                        split[split.Length - 1] = (++build).ToString();
-                    }
-                    if (isRelease && int.TryParse(split[split.Length - 2], out int release))
-                    {
-                        split[split.Length - 2] = (++release).ToString();
-                    }
-                    fileVersion.Value = string.Join(".", split);
-                    Console.WriteLine($"{fileVersion.Value}");
-                }
+                string[] split = assemblyVersion.Value.Split('.');
+
+                if (split.Length > 0 && int.TryParse(split[split.Length - 1], out int build))
+                    split[split.Length - 1] = (++build).ToString();
+
+                if (split.Length > 1 && isRelease && int.TryParse(split[split.Length - 2], out int release))
+                    split[split.Length - 2] = (++release).ToString();
+
+                assemblyVersion.Value = string.Join(".", split);
+
+                Console.WriteLine($"{assemblyVersion.Value}");
             }
-            catch
-            { }
+
+            if (fileVersion != null)
+            {
+                Console.Write($"[ProjectFile] FileVersion: {fileVersion.Value} -> ");
+
+                string[] split = fileVersion.Value.Split('.');
+
+                if (split.Length > 0 && int.TryParse(split[split.Length - 1], out int build))
+                    split[split.Length - 1] = (++build).ToString();
+
+                if (split.Length > 1 && isRelease && int.TryParse(split[split.Length - 2], out int release))
+                    split[split.Length - 2] = (++release).ToString();
+
+                fileVersion.Value = string.Join(".", split);
+
+                Console.WriteLine($"{fileVersion.Value}");
+            }
         }
 
         public void Save()
